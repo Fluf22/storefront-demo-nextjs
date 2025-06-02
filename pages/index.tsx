@@ -1,4 +1,3 @@
-// import { TrendingItems } from '@algolia/recommend-react';
 import { HorizontalSlider } from '@algolia/ui-components-horizontal-slider-react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -6,14 +5,38 @@ import Image from 'next/image';
 import { TrendingItem } from '../components';
 import { categories } from '../data';
 import { cx, recommendClient } from '../utils';
-
-import heroImage from '../public/images/mark-chan-489jbTi51sg-unsplash-optimized.jpg';
+import { PRODUCTS_INDEX } from '../constants';
 
 import '@algolia/ui-components-horizontal-slider-theme';
 import Link from 'next/link';
-import { PRODUCTS_INDEX } from '../constants';
+import { useState } from 'react';
 
 export default function Home() {
+  const [generatedKey, setGeneratedKey] = useState<string | null>(null);
+
+  const handleGenerateKey = async () => {
+    try {
+      const response = await fetch('/api/generate-key', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filters: 'brand:Apple',
+          indexName: PRODUCTS_INDEX,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      setGeneratedKey(data.key);
+    } catch (error) {
+      console.error('Failed to generate key:', error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -63,13 +86,26 @@ export default function Home() {
             <h1 className="text-4xl font-bold tracking-tight text-white sm:tracking-tight sm:text-5xl md:tracking-tight md:text-6xl">
               Back-to-School Sale
             </h1>
-            <div className="mt-4 sm:mt-6">
+            <div className="mt-4 sm:mt-6 space-y-4">
               <a
                 href="#"
                 className="inline-block bg-white border border-transparent rounded-md py-3 px-8 font-medium text-black"
               >
                 Browse now
               </a>
+              <button
+                onClick={handleGenerateKey}
+                className="block mx-auto bg-indigo-600 text-white border border-transparent rounded-md py-3 px-8 font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Generate Secured Key
+              </button>
+              {generatedKey && (
+                <div className="mt-4 p-4 bg-white/90 rounded-md">
+                  <p className="text-sm text-gray-900 break-all">
+                    Generated Key: {generatedKey}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -128,28 +164,6 @@ export default function Home() {
 
       <section aria-labelledby="trending-heading">
         <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:pt-32 lg:px-8">
-          {/* <TrendingItems
-            recommendClient={recommendClient}
-            indexName={PRODUCTS_INDEX}
-            maxRecommendations={10}
-            itemComponent={TrendingItem}
-            view={HorizontalSlider}
-            headerComponent={() => (
-              <div className="flex items-center justify-between mb-4">
-                <h2
-                  id="trending-heading"
-                  className="text-2xl font-bold tracking-tight text-gray-900"
-                >
-                  Trending Products
-                </h2>
-                <Link href="/search">
-                  <a className="text-sm font-medium text-indigo-600 hover:text-indigo-500 block">
-                    Browse now<span aria-hidden="true"> &rarr;</span>
-                  </a>
-                </Link>
-              </div>
-            )}
-          /> */}
           <h1>TRENDING ITEMS COMPONENT</h1>
         </div>
       </section>
