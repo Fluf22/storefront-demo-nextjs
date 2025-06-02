@@ -1,4 +1,4 @@
-import { TrendingItems } from '@algolia/recommend-react';
+// import { TrendingItems } from '@algolia/recommend-react';
 import { HorizontalSlider } from '@algolia/ui-components-horizontal-slider-react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -128,7 +128,7 @@ export default function Home() {
 
       <section aria-labelledby="trending-heading">
         <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:pt-32 lg:px-8">
-          <TrendingItems
+          {/* <TrendingItems
             recommendClient={recommendClient}
             indexName={PRODUCTS_INDEX}
             maxRecommendations={10}
@@ -149,7 +149,8 @@ export default function Home() {
                 </Link>
               </div>
             )}
-          />
+          /> */}
+          <h1>TRENDING ITEMS COMPONENT</h1>
         </div>
       </section>
     </>
