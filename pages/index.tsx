@@ -53,7 +53,7 @@ export default function Home() {
           <div className="flex-1 relative w-full bg-black">
             <div className="absolute inset-0 overflow-hidden">
               <Image
-                src={heroImage}
+                src=""
                 alt=""
                 className="w-full h-full object-center object-cover"
                 layout="fill"
